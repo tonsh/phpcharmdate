@@ -1,9 +1,7 @@
 <?php
-class DatetimeError extends Exception {}
-
-
 class CharmDate {
     const DAY_SECONDS = 86400;
+    const WEEK_SECONDS = 604800;
  
     public $value; // timestamp
     public $year;
@@ -108,18 +106,20 @@ class CharmDate {
     }
 
     public function beginning_of_month() {
-        $time = mktime(0, 0, 0, $this->month, 1, $this->year);
-        return new CharmDate($time);
+        $time = $this->value - self::DAY_SECONDS * ($this->days - 1);
+        $obj = new CharmDate($time);
+        return $obj->beginning_of_date();
     }
 
     public function end_of_month() {
         $end_date = self::month_max_days($this->year, $this->month);
-        $time = mktime(0, 0, 0, $this->month, $end_date, $this->year);
-        return new CharmDate($time);
+        $time = $this->value + self::DAY_SECONDS * ($end_date - $this->days);
+        $obj = new CharmDate($time);
+        return $obj->end_of_date();
     }
 
     public function next_week($week=0) {
-        $time = $this->value + $week * self::DAY_SECONDS * 7;
+        $time = $this->value + $week * self::WEEK_SECONDS;
         return new CharmDate($time);
     }
 
