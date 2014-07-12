@@ -96,17 +96,10 @@ class CharmDate {
         $year = $this->year;
         $month = $this->month + $month;
         $days = $this->days;
- 
-        if($month > 12) {
-            $year += intval($month / 12);
-            $month = $month % 12;
-        }
 
-        if($month < 0) {
-            $month = abs($month);
-            $year = $year - intval($month / 12) - 1;
-            $month = 12 - $month % 12;
-        }
+        $months = $year * 12 + $month;
+        $year = intval($months / 12);
+        $month = $months % 12;
  
         $days = min($this->days, self::month_max_days($year, $month));
         $time = mktime($this->hours, $this->minutes, $this->seconds,
