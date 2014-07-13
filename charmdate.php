@@ -21,7 +21,7 @@ class CharmDate {
     }
  
     public function __toString() {
-        return $this->datetime("%Y-%m-%d %H:%M:%S");
+        return $this->datetime('%Y-%m-%d %H:%M:%S');
     }
  
     private function reset_property() {
@@ -50,7 +50,7 @@ class CharmDate {
         return false;
     }
  
-    public static function month_max_days($year, $month) {
+    public static function max_month_days($year, $month) {
         if($month == 2) {
             if(self::is_leap_year($year)) {
                 return 29;
@@ -99,7 +99,7 @@ class CharmDate {
         $year = intval($months / 12);
         $month = $months % 12;
  
-        $days = min($this->days, self::month_max_days($year, $month));
+        $days = min($this->days, self::max_month_days($year, $month));
         $time = mktime($this->hours, $this->minutes, $this->seconds,
                        $month, $days, $year);
         return new CharmDate($time);
@@ -112,7 +112,7 @@ class CharmDate {
     }
 
     public function end_of_month() {
-        $end_date = self::month_max_days($this->year, $this->month);
+        $end_date = self::max_month_days($this->year, $this->month);
         $time = $this->value + self::DAY_SECONDS * ($end_date - $this->days);
         $obj = new CharmDate($time);
         return $obj->end_of_date();
